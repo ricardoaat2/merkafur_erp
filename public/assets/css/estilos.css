@@ -1,0 +1,743 @@
+/* ============================================================================
+   ARCHIVO: public/assets/css/estilos.css
+   ESTÉTICA: "Cobalt Ledger Terminal" - Identidad Corporativa Merkafur ERP
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+    /* Paleta Oficial Merkafur (Extraída del Logo) */
+    --mk-navy-950: #041326;
+    --mk-navy-900: #072142;
+    --mk-cobalt-800: #003366;
+    --mk-cobalt-700: #004488;
+    --mk-cobalt-600: #0059B3;
+    --mk-cobalt-100: #E0EEFF;
+    
+    /* Acento Flecha Amarilla/Ámbar de Merkafur */
+    --mk-gold-500: #F5B316;
+    --mk-gold-400: #FFC93C;
+    --mk-gold-600: #D99B00;
+    --mk-gold-soft: rgba(245, 179, 22, 0.16);
+
+    /* Superficies tipo Papel Contable Técnico */
+    --mk-bg-canvas: #EEF3F9;
+    --mk-surface: #FFFFFF;
+    --mk-surface-alt: #F7FAFC;
+    --mk-border: #D5E0EE;
+    --mk-border-strong: #B4C6DEC0;
+
+    /* Texto */
+    --mk-text-main: #0A1E3C;
+    --mk-text-muted: #526682;
+    --mk-text-light: #F8FAFC;
+
+    /* Semántica Contable (Partida Doble) */
+    --mk-debe-bg: #E0F2FE;
+    --mk-debe-text: #0369A1;
+    --mk-haber-bg: #FEF3C7;
+    --mk-haber-text: #B45309;
+    --mk-ok-bg: #D1FAE5;
+    --mk-ok-text: #047857;
+    --mk-err-bg: #FEE2E2;
+    --mk-err-text: #B91C1C;
+
+    /* Tipografías */
+    --font-display: 'Bricolage Grotesque', sans-serif;
+    --font-sans: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Sombras y Radios */
+    --shadow-card: 0 10px 30px -10px rgba(4, 19, 38, 0.08), 0 2px 6px -1px rgba(0, 68, 136, 0.05);
+    --shadow-float: 0 20px 40px -12px rgba(4, 19, 38, 0.22);
+    --radius-lg: 16px;
+    --radius-md: 10px;
+    --radius-sm: 6px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: var(--font-sans);
+    color: var(--mk-text-main);
+    background-color: var(--mk-bg-canvas);
+    /* Fondo con atmósfera: malla contable + resplandor cobalto/oro */
+    background-image: 
+        radial-gradient(circle at 92% 8%, rgba(245, 179, 22, 0.10) 0%, transparent 35%),
+        radial-gradient(circle at 15% 85%, rgba(0, 68, 136, 0.08) 0%, transparent 40%),
+        radial-gradient(#B8C9DF 1px, transparent 1px);
+    background-size: 100% 100%, 100% 100%, 24px 24px;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* ============================================================================
+   ANIMACIONES Y REVELADO ESCALONADO (STAGGERED REVEAL)
+   ============================================================================ */
+@keyframes mkReveal {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes mkPulseGold {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(245, 179, 22, 0.55); }
+    50% { box-shadow: 0 0 0 8px rgba(245, 179, 22, 0); }
+}
+
+.reveal {
+    animation: mkReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    opacity: 0;
+}
+.stagger-1 { animation-delay: 0.06s; }
+.stagger-2 { animation-delay: 0.14s; }
+.stagger-3 { animation-delay: 0.22s; }
+.stagger-4 { animation-delay: 0.30s; }
+
+/* ============================================================================
+   LAYOUT GENERAL (SIDEBAR + MAIN CONTENT)
+   ============================================================================ */
+.erp-wrapper {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    min-height: 100vh;
+}
+
+/* SIDEBAR MERKAFUR */
+.erp-sidebar {
+    background: linear-gradient(165deg, var(--mk-navy-950) 0%, var(--mk-navy-900) 55%, var(--mk-cobalt-800) 100%);
+    color: var(--mk-text-light);
+    padding: 1.5rem 1.15rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-right: 3px solid var(--mk-gold-500);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 50;
+}
+
+.brand-box {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    padding: 0.65rem 0.75rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(245, 179, 22, 0.3);
+    border-radius: var(--radius-md);
+    margin-bottom: 1.8rem;
+}
+
+.brand-logo-svg {
+    width: 46px;
+    height: 46px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.35));
+}
+
+.brand-title {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    color: #FFFFFF;
+    line-height: 1;
+}
+
+.brand-subtitle {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--mk-gold-400);
+    margin-top: 4px;
+    display: block;
+}
+
+.nav-section-label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: rgba(255, 255, 255, 0.45);
+    margin: 1.1rem 0 0.5rem 0.6rem;
+}
+
+.erp-nav {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.erp-nav a {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.78rem 0.95rem;
+    color: rgba(255, 255, 255, 0.82);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.92rem;
+    border-radius: var(--radius-md);
+    transition: all 0.22s ease;
+    border-left: 3px solid transparent;
+}
+
+.erp-nav a:hover,
+.erp-nav a.active {
+    background: rgba(245, 179, 22, 0.14);
+    color: #FFFFFF;
+    border-left-color: var(--mk-gold-500);
+    transform: translateX(4px);
+}
+
+.erp-nav a .nav-icon {
+    font-size: 1.18rem;
+}
+
+.sidebar-user-card {
+    background: rgba(4, 19, 38, 0.65);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.95rem;
+    border-radius: var(--radius-md);
+    margin-top: 1.5rem;
+}
+
+.role-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 0.22rem 0.6rem;
+    border-radius: 999px;
+    background: var(--mk-gold-500);
+    color: var(--mk-navy-950);
+    margin-bottom: 0.4rem;
+}
+
+/* ============================================================================
+   TOPBAR FINANCIERA Y TICKER BCV API
+   ============================================================================ */
+.erp-main {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.erp-topbar {
+    background: var(--mk-surface);
+    border-bottom: 1px solid var(--mk-border);
+    padding: 0.9rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem;
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    backdrop-filter: blur(10px);
+}
+
+.page-heading h1 {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 800;
+    color: var(--mk-navy-950);
+    letter-spacing: -0.02em;
+}
+
+.topbar-tickers {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    flex-wrap: wrap;
+}
+
+.bcv-badge {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    background: var(--mk-navy-950);
+    color: #FFFFFF;
+    padding: 0.48rem 0.95rem;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--mk-gold-500);
+    font-family: var(--font-mono);
+    font-size: 0.84rem;
+}
+
+.bcv-dot {
+    width: 9px;
+    height: 9px;
+    background: var(--mk-gold-500);
+    border-radius: 50%;
+    animation: mkPulseGold 2s infinite;
+}
+
+.bcv-value {
+    color: var(--mk-gold-400);
+    font-weight: 700;
+    font-size: 0.96rem;
+}
+
+/* ============================================================================
+   CONTENEDOR DE TRABAJO, TARJETAS KPI Y PESTAÑAS (TABS)
+   ============================================================================ */
+.erp-content {
+    padding: 1.75rem 2rem 3rem;
+    max-width: 1480px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+.kpi-strip {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.1rem;
+    margin-bottom: 1.75rem;
+}
+
+.kpi-card {
+    background: var(--mk-surface);
+    border: 1px solid var(--mk-border);
+    border-top: 4px solid var(--mk-cobalt-700);
+    border-radius: var(--radius-md);
+    padding: 1.1rem 1.25rem;
+    box-shadow: var(--shadow-card);
+    transition: transform 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+}
+
+.kpi-card.gold-accent {
+    border-top-color: var(--mk-gold-500);
+}
+
+.kpi-label {
+    font-size: 0.76rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--mk-text-muted);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.kpi-amount {
+    font-family: var(--font-mono);
+    font-size: 1.38rem;
+    font-weight: 700;
+    color: var(--mk-navy-950);
+    margin-top: 0.45rem;
+    font-variant-numeric: tabular-nums;
+}
+
+/* PESTAÑAS INTERACTIVAS */
+.mk-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.35rem;
+    border-bottom: 2px solid var(--mk-border);
+    padding-bottom: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.mk-tab-btn {
+    font-family: var(--font-display);
+    font-size: 0.94rem;
+    font-weight: 700;
+    padding: 0.65rem 1.2rem;
+    border-radius: var(--radius-md);
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--mk-text-muted);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: all 0.2s ease;
+}
+
+.mk-tab-btn:hover {
+    background: var(--mk-cobalt-100);
+    color: var(--mk-cobalt-800);
+}
+
+.mk-tab-btn.active {
+    background: var(--mk-cobalt-700);
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 68, 136, 0.25);
+}
+
+.mk-tab-panel {
+    display: none;
+}
+
+.mk-tab-panel.active {
+    display: block;
+    animation: mkReveal 0.32s ease forwards;
+}
+
+/* ============================================================================
+   PANELES, FORMULARIOS, INPUTS CON EJEMPLOS Y BOTONES CON EMOJIS
+   ============================================================================ */
+.mk-panel {
+    background: var(--mk-surface);
+    border: 1px solid var(--mk-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 1.5rem;
+}
+
+.mk-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding-bottom: 1rem;
+    margin-bottom: 1.25rem;
+    border-bottom: 1px solid var(--mk-border);
+    flex-wrap: wrap;
+}
+
+.mk-panel-title {
+    font-family: var(--font-display);
+    font-size: 1.18rem;
+    font-weight: 700;
+    color: var(--mk-navy-950);
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-group label {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--mk-navy-900);
+}
+
+.form-group .helper-hint {
+    font-size: 0.73rem;
+    color: var(--mk-text-muted);
+}
+
+.mk-input,
+.mk-select {
+    font-family: var(--font-sans);
+    font-size: 0.92rem;
+    padding: 0.68rem 0.85rem;
+    border: 1.5px solid var(--mk-border);
+    border-radius: var(--radius-sm);
+    background: var(--mk-surface-alt);
+    color: var(--mk-text-main);
+    transition: all 0.18s ease;
+    width: 100%;
+}
+
+.mk-input.mono {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+}
+
+.mk-input::placeholder {
+    color: #94A3B8;
+    font-style: italic;
+}
+
+.mk-input:focus,
+.mk-select:focus {
+    outline: none;
+    border-color: var(--mk-cobalt-600);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(0, 89, 179, 0.15);
+}
+
+/* BOTONES DISTINTIVOS MERKAFUR */
+.btn {
+    font-family: var(--font-sans);
+    font-size: 0.88rem;
+    font-weight: 700;
+    padding: 0.68rem 1.15rem;
+    border-radius: var(--radius-sm);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    text-decoration: none;
+    transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.btn:active {
+    transform: scale(0.97);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--mk-cobalt-700), var(--mk-cobalt-800));
+    color: #FFFFFF;
+    box-shadow: 0 4px 12px rgba(0, 68, 136, 0.25);
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--mk-cobalt-600), var(--mk-cobalt-700));
+    transform: translateY(-2px);
+}
+
+.btn-gold {
+    background: linear-gradient(135deg, var(--mk-gold-500), var(--mk-gold-600));
+    color: var(--mk-navy-950);
+    box-shadow: 0 4px 12px rgba(245, 179, 22, 0.3);
+}
+
+.btn-gold:hover {
+    background: var(--mk-gold-400);
+    transform: translateY(-2px);
+}
+
+.btn-outline {
+    background: #FFFFFF;
+    color: var(--mk-cobalt-800);
+    border: 1.5px solid var(--mk-border);
+}
+
+.btn-outline:hover {
+    border-color: var(--mk-cobalt-700);
+    background: var(--mk-cobalt-100);
+}
+
+.btn-danger {
+    background: var(--mk-err-bg);
+    color: var(--mk-err-text);
+}
+
+/* ============================================================================
+   TABLAS CONTABLES DE ALTA PRECISIÓN (LIBROS Y BALANCES)
+   ============================================================================ */
+.table-responsive {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--mk-border);
+}
+
+.mk-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.88rem;
+    background: var(--mk-surface);
+}
+
+.mk-table thead th {
+    background: var(--mk-navy-900);
+    color: #FFFFFF;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 0.85rem 1rem;
+    text-align: left;
+    border-bottom: 2px solid var(--mk-gold-500);
+}
+
+.mk-table tbody td {
+    padding: 0.78rem 1rem;
+    border-bottom: 1px solid var(--mk-border);
+    vertical-align: middle;
+}
+
+.mk-table tbody tr:hover {
+    background-color: #F1F6FD;
+}
+
+.num-col {
+    font-family: var(--font-mono);
+    text-align: right !important;
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+}
+
+.code-badge {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 4px;
+    background: var(--mk-cobalt-100);
+    color: var(--mk-cobalt-800);
+}
+
+.badge-deudora {
+    background: var(--mk-debe-bg);
+    color: var(--mk-debe-text);
+    padding: 0.2rem 0.55rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-acreedora {
+    background: var(--mk-haber-bg);
+    color: var(--mk-haber-text);
+    padding: 0.2rem 0.55rem;
+    border-radius: 99px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.badge-ok {
+    background: var(--mk-ok-bg);
+    color: var(--mk-ok-text);
+    padding: 0.25rem 0.65rem;
+    border-radius: 99px;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+.badge-err {
+    background: var(--mk-err-bg);
+    color: var(--mk-err-text);
+    padding: 0.25rem 0.65rem;
+    border-radius: 99px;
+    font-size: 0.76rem;
+    font-weight: 700;
+}
+
+/* Barra Validadora de Partida Doble en Vivo */
+.partida-doble-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-family: var(--font-mono);
+    margin-top: 1rem;
+    transition: all 0.25s ease;
+}
+
+.partida-doble-bar.balanced {
+    background: var(--mk-ok-bg);
+    border: 1.5px solid #10B981;
+    color: var(--mk-ok-text);
+}
+
+.partida-doble-bar.unbalanced {
+    background: var(--mk-err-bg);
+    border: 1.5px solid #EF4444;
+    color: var(--mk-err-text);
+}
+
+/* ============================================================================
+   PANTALLA DE LOGIN SPLIT-SCREEN MERKAFUR
+   ============================================================================ */
+.login-shell {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+}
+
+.login-hero {
+    background: linear-gradient(145deg, var(--mk-navy-950) 0%, var(--mk-cobalt-800) 60%, var(--mk-cobalt-700) 100%);
+    color: #FFFFFF;
+    padding: 4rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+    overflow: hidden;
+    border-right: 4px solid var(--mk-gold-500);
+}
+
+.login-hero::after {
+    content: '';
+    position: absolute;
+    width: 480px;
+    height: 480px;
+    border: 45px solid rgba(245, 179, 22, 0.08);
+    border-radius: 50%;
+    bottom: -140px;
+    right: -120px;
+    pointer-events: none;
+}
+
+.login-form-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem;
+}
+
+.login-card {
+    background: var(--mk-surface);
+    border: 1px solid var(--mk-border);
+    border-radius: var(--radius-lg);
+    padding: 2.5rem;
+    width: 100%;
+    max-width: 440px;
+    box-shadow: var(--shadow-float);
+}
+
+/* ============================================================================
+   REGLAS DE IMPRESIÓN (@media print) PARA LIBROS Y ESTADOS FINANCIEROS
+   ============================================================================ */
+@media print {
+    .erp-sidebar,
+    .erp-topbar,
+    .mk-tabs,
+    .no-print,
+    .btn {
+        display: none !important;
+    }
+    .erp-wrapper {
+        display: block;
+    }
+    body {
+        background: #FFFFFF !important;
+    }
+    .mk-panel {
+        box-shadow: none;
+        border: 1px solid #000;
+        padding: 0.5rem;
+    }
+}
+
+@media (max-width: 960px) {
+    .erp-wrapper, .login-shell {
+        grid-template-columns: 1fr;
+    }
+    .erp-sidebar {
+        height: auto;
+        position: relative;
+    }
+}
